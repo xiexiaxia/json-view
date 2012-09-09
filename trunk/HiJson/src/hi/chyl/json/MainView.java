@@ -12,7 +12,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -23,6 +22,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
@@ -162,6 +162,7 @@ public class MainView extends FrameView {
                  JTextArea ta = getTextArea();
                  if(ta!=null){
                       ta.paste();
+                      formatJson();
                  }
             }
         });
@@ -386,7 +387,7 @@ public class MainView extends FrameView {
 
         tabbedContainer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("@@@:TabbedContainerActionCommand = "+e.getActionCommand());
+                //System.out.println("@@@:TabbedContainerActionCommand = "+e.getActionCommand());
                 if("select".equalsIgnoreCase(e.getActionCommand())){
                     treePathLst.clear();
                 }
@@ -472,6 +473,7 @@ public class MainView extends FrameView {
         scheme.getStyle(Token.OPERATOR).foreground = Color.BLACK;
         textArea.revalidate();
         textArea.addMouseListener(new TextAreaMouseListener());
+       
         return textArea;
     }
 
@@ -1074,15 +1076,18 @@ public class MainView extends FrameView {
                 JMenuItem copyValue = new JMenuItem("复制 键值");
                 JMenuItem copyKey = new JMenuItem("复制 键名");
                 JMenuItem copyPath = new JMenuItem("复制 路径");
-                JMenuItem copyNode = new JMenuItem("复制 节点内容");
                 JMenuItem copyKeyValue = new JMenuItem("复制 键名键值");
+                JMenuItem copyNode = new JMenuItem("复制 节点内容");
                 JMenuItem copyPathAllVal = new JMenuItem("复制 同路径键值");
+                JMenuItem copySingleNodeString = new JMenuItem("复制 MAP式内容");
                 JMenuItem copyNodeFormat = new JMenuItem("复制 节点内容带格式");
+                
                 popMenu.add(copyKey);
                 popMenu.add(copyValue);
                 popMenu.add(copyPath);
                 popMenu.add(copyNode);
                 popMenu.add(copyKeyValue);
+                popMenu.add(copySingleNodeString);
                 popMenu.add(copyPathAllVal);
                 popMenu.add(copyNodeFormat);
                 copyKey.addActionListener(new TreeNodeMenuItemActionListener(tree,1, selNode));
@@ -1092,6 +1097,7 @@ public class MainView extends FrameView {
                 copyPathAllVal.addActionListener(new TreeNodeMenuItemActionListener(tree,5,selNode));
                 copyNode.addActionListener(new TreeNodeMenuItemActionListener(tree,6,path));
                 copyNodeFormat.addActionListener(new TreeNodeMenuItemActionListener(tree,7,path));
+                copySingleNodeString.addActionListener(new TreeNodeMenuItemActionListener(tree,8,selNode));
                 popMenu.show(e.getComponent(), e.getX(), e.getY());
             }
         }
@@ -1115,7 +1121,12 @@ public class MainView extends FrameView {
             this.obj = obj;
             this.tree = tree;
         }
-        public String parseTreePath(TreePath treePath){
+        /**
+         * 复制节点路径.
+         * @param treePath
+         * @return 
+         */
+        public String copyTreeNodePath(TreePath treePath){
             String str = "";
             String s = "";
             int len =  treePath.getPathCount() -1;
@@ -1129,10 +1140,15 @@ public class MainView extends FrameView {
                 }
             }
             str = StringUtils.replace(str, String.valueOf(dot)+"[", "[");
+            str = StringUtils.substring(str, 5);
             return str;
         }
-
-        public String parsePathAllVal(TreeNode treeNode){
+        /**
+         * 复制相似路径节点键值对.
+         * @param treeNode
+         * @return 
+         */
+        public String copySimilarPathKeyValue(TreeNode treeNode){
             String str = "";
             String key = Kit.pstr(treeNode.toString())[1];
             TreeNode node = treeNode.getParent();
@@ -1156,7 +1172,13 @@ public class MainView extends FrameView {
             }
             return str;
         }
-        private String parsePathContent(String path,boolean isFormat){
+        /**
+         * 复制节点内容.
+         * @param path 节点路径
+         * @param isFormat 是否带格式
+         * @return 
+         */
+        private String copyNodeContent(String path,boolean isFormat){
             String str = "";
             String arr[] = StringUtils.split(path, String.valueOf(dot));
             System.out.println("Get HashCode : " + tree.hashCode() + " . TabTitle : " + getTabTitle());
@@ -1187,22 +1209,22 @@ public class MainView extends FrameView {
             StringSelection stringSelection = null;
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             if(optType == 4){
-                 String path = parseTreePath((TreePath)obj);
+                 String path = copyTreeNodePath((TreePath)obj);
                  path = StringUtils.replace(path, String.valueOf(dot), ".");
                  stringSelection = new StringSelection(path);
                  clipboard.setContents(stringSelection, null);
                  return;
             }
             else if(optType == 5){
-                 stringSelection = new StringSelection(parsePathAllVal((TreeNode)obj));
+                 stringSelection = new StringSelection(copySimilarPathKeyValue((TreeNode)obj));
                  clipboard.setContents(stringSelection, null);
                  return;
             }
             else if(optType == 6 || optType == 7){
-                String path = parseTreePath((TreePath)obj);
+                String path = copyTreeNodePath((TreePath)obj);
                 boolean isForamt = false;
                 if(optType == 7) isForamt = true;
-                String str = parsePathContent(path,isForamt);
+                String str = copyNodeContent(path,isForamt);
                 stringSelection = new StringSelection(str);
                 clipboard.setContents(stringSelection, null);
                  return;
@@ -1210,10 +1232,16 @@ public class MainView extends FrameView {
             else{
                 String str = obj.toString();
                 String[] arr = Kit.pstr(str);
+                 if("<null>".equals(arr[2])){
+                        arr[2] = "null";
+                 }
                 if (optType == 1 || optType == 2){
                     stringSelection = new StringSelection(arr[optType]);
                 } else if (optType == 3) {
                     stringSelection = new StringSelection(str.substring(2));
+                }else if(optType == 8){
+                    String temp = "\"" + arr[1] + "\",\"" + arr[2] + "\"";
+                    stringSelection = new StringSelection(temp);
                 }
                 clipboard.setContents(stringSelection, null);
             }
@@ -1272,6 +1300,7 @@ public class MainView extends FrameView {
                 getTextArea().copy();
             }else if(optType==2){
                 getTextArea().paste();
+                formatJson();
             }else if(optType==3){
                 getTextArea().selectAll();
             }else if(optType==4){
@@ -1308,6 +1337,7 @@ public class MainView extends FrameView {
             }
         }
         textArea.setText(sb.toString());
+        formatJson();
     }
 
     private void codeChangeAction(){
