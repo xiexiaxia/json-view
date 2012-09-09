@@ -4,7 +4,6 @@
 
 package hi.chyl.json;
 
-import java.awt.Dimension;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
