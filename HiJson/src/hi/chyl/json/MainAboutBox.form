@@ -28,28 +28,38 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="imageLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="appDescLabel" pref="266" max="32767" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="versionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="vendorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="homepageLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="appDescLabel" pref="266" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="versionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="vendorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="homepageLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="appVersionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="appVendorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="appHomepageLabel" alignment="0" min="-2" pref="102" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="appVersionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="appVendorLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="appHomepageLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="appTitleLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="homepageLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="appHomepageLabel1" pref="220" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <Component id="appTitleLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="closeButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
+                      <Component id="closeButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -74,11 +84,16 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="homepageLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="appHomepageLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="appHomepageLabel" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="22" max="32767" attributes="0"/>
-              <Component id="closeButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="homepageLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="appHomepageLabel1" alignment="3" min="-2" pref="15" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="closeButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -196,6 +211,31 @@
       <Properties>
         <Property name="icon" type="javax.swing.Icon" resourceKey="imageLabel.icon"/>
         <Property name="name" type="java.lang.String" value="imageLabel" noResource="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="homepageLabel1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.modules.form.editors2.FontEditor">
+          <FontInfo relative="true">
+            <Font bold="true" component="homepageLabel1" property="font" relativeSize="true" size="0"/>
+          </FontInfo>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="homepageLabel1.text"/>
+        <Property name="name" type="java.lang.String" value="homepageLabel1" noResource="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="appHomepageLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="appHomepageLabel1.text"/>
+        <Property name="name" type="java.lang.String" value="appHomepageLabel1" noResource="true"/>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
