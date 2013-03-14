@@ -1,5 +1,6 @@
 package hi.chyl.json;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -22,7 +23,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
@@ -94,7 +94,7 @@ public class MainView extends FrameView {
     private JDialog     aboutBox;
     private TabDataModel tabDataModel;
     private TabbedContainer  tabbedContainer;
-    private Map jsonMap = new HashMap();
+    private Map jsonEleTreeMap = new HashMap();
     private boolean isTxtFindDlgOpen = false;
     private boolean isTreeFinDlgdOpen = false;
     private List<TreePath> treePathLst = new ArrayList<TreePath>();
@@ -377,7 +377,7 @@ public class MainView extends FrameView {
                      tbArr[0].getText();
                      JTree tree = getTree(tbArr[0]);
                      if(tree!=null){
-                         jsonMap.remove(tree.hashCode());
+                         jsonEleTreeMap.remove(tree.hashCode());
                          System.out.println("Remove HashCode: "+ tree.hashCode() + ". Close Tab: " + tbArr[0].getText() + " !");
                      }
                 }
@@ -607,6 +607,8 @@ public class MainView extends FrameView {
         String text = ta.getText();
         try {
             JsonParser parser = new JsonParser();
+            Object obj = JSON.parse(text);
+            text = JSON.toJSONString(obj);
             jsonEle =  parser.parse(text);
             if(jsonEle!=null && !jsonEle.isJsonNull()){
                 GsonBuilder gb = new GsonBuilder();
@@ -630,7 +632,7 @@ public class MainView extends FrameView {
         //创建树节点
         JTree tree = getTree();
         System.out.println("Put HashCode : " + tree.hashCode() + " . TabTitle : " + getTabTitle() +  " !");
-        jsonMap.put(tree.hashCode(), jsonEle);
+        jsonEleTreeMap.put(tree.hashCode(), jsonEle);
         DefaultMutableTreeNode root = Kit.objNode("JSON");
         DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
         try {
@@ -669,6 +671,7 @@ public class MainView extends FrameView {
                 formatJsonPrimitive("PRI",pri,pNode);
             }
     }
+    
 
     /**
      * 处理json数组.
@@ -1182,7 +1185,7 @@ public class MainView extends FrameView {
             String str = "";
             String arr[] = StringUtils.split(path, String.valueOf(dot));
             System.out.println("Get HashCode : " + tree.hashCode() + " . TabTitle : " + getTabTitle());
-            JsonElement obj = (JsonElement)jsonMap.get(tree.hashCode());
+            JsonElement obj = (JsonElement)jsonEleTreeMap.get(tree.hashCode());
             if(arr.length>1){
                 for(int i =1; i< arr.length; i++){
                     int index = Kit.getIndex(arr[i]);
