@@ -1,6 +1,7 @@
 package hi.chyl.json;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -124,7 +125,7 @@ public class MainView extends FrameView {
         final JTextField textField = new JTextField();
         textField.setMaximumSize(new Dimension(180,25));
         JButton btnAppTitle = new JButton("标题修改");
-        JButton btnFormat = new JButton("格式化JSON字符串(F)");
+        JButton btnFormat = new JButton("格式化(F)");
         JButton btnClean = new JButton("清空(D)");
         JButton btnParse = new JButton("粘帖(V)");
         JButton btnNewLine = new JButton("清除(\\n)");
@@ -134,6 +135,8 @@ public class MainView extends FrameView {
         JButton btnNewTab = new JButton("新标签(N)");
         JButton btnSelTabName = new JButton("标签名修改");
         JButton btnCloseTab = new JButton("关闭标签");
+        
+        btnFormat.setBackground(Color.GREEN);
 
         btnAppTitle.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -607,8 +610,9 @@ public class MainView extends FrameView {
         String text = ta.getText();
         try {
             JsonParser parser = new JsonParser();
+            
             Object obj = JSON.parse(text);
-            text = JSON.toJSONString(obj);
+            text = JSON.toJSONString(obj,SerializerFeature.WriteMapNullValue);
             jsonEle =  parser.parse(text);
             if(jsonEle!=null && !jsonEle.isJsonNull()){
                 GsonBuilder gb = new GsonBuilder();
